@@ -30,9 +30,14 @@ class EditEntryViewController: UIViewController {
     }
     
     @objc private func trashRecord(_ sender:UIBarButtonItem){
-        if let contact = contact,    DataManager.deleteRecord(record: contact) {
-            performSegue(withIdentifier: "unwindToViewController1", sender: self)
-        }
+        let alert = UIAlertController(title: "Are you sure?", message: "You wan't to delete this record permanently?", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Delete", style: UIAlertAction.Style.default, handler: { action in
+            if let contact = self.contact,    DataManager.deleteRecord(record: contact) {
+                self.performSegue(withIdentifier: "unwindToViewController1", sender: self)
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     override func viewWillDisappear(_ animated: Bool) {
         DataManager.saveRecords()
