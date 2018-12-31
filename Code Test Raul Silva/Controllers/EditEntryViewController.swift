@@ -12,10 +12,9 @@ import CoreData
 class EditEntryViewController: UIViewController {
     var contact:Contact?
     var isNew = false
-    var addresseObjectsSet:[UITextField:Address]?
-    var emailObjectsSet:[UITextField:Email]?
-    var phoneObjectsSet:[UITextField:Phone]?
-    
+    var addresseObjectsSet:[UITextField:Address] = [:]
+    var emailObjectsSet:[UITextField:Email] = [:]
+    var phoneObjectsSet:[UITextField:Phone] = [:]
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -31,7 +30,7 @@ class EditEntryViewController: UIViewController {
     }
     
     @objc private func trashRecord(_ sender:UIBarButtonItem){
-        if let contact = contact, DataManager.deleteRecord(record: contact) {
+        if let contact = contact,    DataManager.deleteRecord(record: contact) {
             performSegue(withIdentifier: "unwindToViewController1", sender: self)
         }
     }
@@ -86,13 +85,14 @@ class EditEntryViewController: UIViewController {
             contact?.secondName = textField.text
         }
 
-        if phoneObjectsSet?.keys.contains(textField) == true, let phoneObject =   phoneObjectsSet?[textField]{
+        if phoneObjectsSet.keys.contains(textField) == true, let phoneObject =   phoneObjectsSet[textField]{
                 phoneObject.phonenumber = textField.text
         }
-        if emailObjectsSet?.keys.contains(textField) == true, let emailObject = emailObjectsSet?[textField]{
+        
+        if emailObjectsSet.keys.contains(textField) == true, let emailObject = emailObjectsSet[textField]{
                 emailObject.emailAddress = textField.text
         }
-        if addresseObjectsSet?.keys.contains(textField) == true, let addressObect = addresseObjectsSet?[textField]{
+        if addresseObjectsSet.keys.contains(textField) == true, let addressObect = addresseObjectsSet[textField]{
                 addressObect.addressEntry = textField.text
         }
         DataManager.saveRecords()
@@ -209,7 +209,7 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
                 cell.delegate = self
                 cell.contact = contact
                 cell.cellType = .email
-                emailObjectsSet?[cell.entryField] = emailObject
+                emailObjectsSet[cell.entryField] = emailObject
             }
             return cell
         case 3:
@@ -222,7 +222,7 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
                 cell.delegate = self
                 cell.contact = contact
                 cell.cellType = .address
-                addresseObjectsSet?[cell.entryField] = addressObject
+                addresseObjectsSet[cell.entryField] = addressObject
             }
             return cell
         case 5:
@@ -235,7 +235,7 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
                 cell.contact = contact
                 cell.cellType = .phone
                 cell.delegate = self
-                phoneObjectsSet?[cell.entryField] = phoneObject
+                phoneObjectsSet[cell.entryField] = phoneObject
             }
             return cell
         default:
@@ -257,7 +257,6 @@ extension EditEntryViewController:UITextFieldDelegate{
 
 extension EditEntryViewController:EntryTableViewCellDelegate{
     func didDeleteItem() {
-        mapCells()
         tableView.reloadData()
     }  
 }
