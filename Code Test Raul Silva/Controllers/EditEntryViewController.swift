@@ -226,7 +226,7 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
                 cell.contact = contact
                 cell.cellType = .email
                 if count == 1 {
-                    cell.isNotDeletable = false
+                    cell.deleteButton.isHidden = true
                 }
                 emailObjectsSet[cell.entryField] = emailObject
             }
@@ -257,7 +257,7 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
                 cell.delegate = self
                
                 if count == 1 {
-                    cell.isNotDeletable = false
+                    cell.deleteButton.isHidden = true
                 }
                 phoneObjectsSet[cell.entryField] = phoneObject
             }

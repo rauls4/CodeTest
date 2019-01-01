@@ -21,13 +21,10 @@ class EntryTableViewCell: UITableViewCell {
     
     var entity:NSManagedObject?
     var contact:Contact?
-    var isNotDeletable = true
     var cellType:CellTypes?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        if isNotDeletable { deleteButton.isHidden = true}
-        deleteButton.isHidden = true
     }
 
 
