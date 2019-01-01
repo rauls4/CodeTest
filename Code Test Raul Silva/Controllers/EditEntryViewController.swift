@@ -25,7 +25,12 @@ class EditEntryViewController: UIViewController {
         
         if isNew {
             self.title = "New contact"
+            if let contact = contact{
+               let _ = DataManager.addAttribute(value: "", toEntity: contact, targetEntityName: "Email", targetRelationship: "email", targetAttribute: "emailAddress")
+               let _ = DataManager.addAttribute(value: "", toEntity: contact, targetEntityName: "Phone", targetRelationship: "phone", targetAttribute: "phonenumber")
+            }
         }
+        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trashRecord(_:)))
     }
     
@@ -44,7 +49,7 @@ class EditEntryViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-      self.mapCells()
+        self.mapCells()
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableView.automaticDimension
     }
@@ -60,6 +65,7 @@ class EditEntryViewController: UIViewController {
             }else{
                 cellMap?.append(.email)
             }
+
             if let addresses = contact.addresses {
                 for _ in addresses{
                     cellMap?.append(.address)
@@ -67,6 +73,7 @@ class EditEntryViewController: UIViewController {
             }else{
                 cellMap?.append(.address)
             }
+            
             if let phones = contact.phones {
                 for _ in phones{
                     cellMap?.append(.phone)
@@ -77,10 +84,31 @@ class EditEntryViewController: UIViewController {
         }
     }
     
+    @objc private func addField(sender: UIButton?) {
+        if let contact = contact{
+            switch sender?.tag{
+            case 4:
+                if DataManager.addAttribute(value: "", toEntity: contact, targetEntityName: "Email", targetRelationship: "email", targetAttribute: "emailAddress"){
+                    tableView.reloadData()
+                }
+            case 3:
+                if DataManager.addAttribute(value: "", toEntity: contact, targetEntityName: "Address", targetRelationship: "address", targetAttribute: "addressEntry"){
+                    tableView.reloadData()
+                }
+            case 5:
+                if DataManager.addAttribute(value: "", toEntity: contact, targetEntityName: "Phone", targetRelationship: "phone", targetAttribute: "phonenumber"){
+                    tableView.reloadData()
+                }
+            default:
+                break
+            }
+        }
+    }
+    
     private func editRecord(textField: UITextField){
         if let firstNameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? FirstNameTableViewCell,
             textField == firstNameCell.firstNameField
-            {
+        {
             contact?.firstName = textField.text
         }
         
@@ -89,16 +117,16 @@ class EditEntryViewController: UIViewController {
         {
             contact?.secondName = textField.text
         }
-
+        
         if phoneObjectsSet.keys.contains(textField) == true, let phoneObject =   phoneObjectsSet[textField]{
-                phoneObject.phonenumber = textField.text
+            phoneObject.phonenumber = textField.text
         }
         
         if emailObjectsSet.keys.contains(textField) == true, let emailObject = emailObjectsSet[textField]{
-                emailObject.emailAddress = textField.text
+            emailObject.emailAddress = textField.text
         }
         if addresseObjectsSet.keys.contains(textField) == true, let addressObect = addresseObjectsSet[textField]{
-                addressObect.addressEntry = textField.text
+            addressObect.addressEntry = textField.text
         }
         DataManager.saveRecords()
     }
@@ -135,27 +163,6 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
         
         let headerView = UIView()
         return headerView
-    }
-    
-    @objc private func addField(sender: UIButton?) {
-        if let contact = contact{
-            switch sender?.tag{
-            case 4:
-                if DataManager.addAttribute(value: "", toEntity: contact, targetEntityName: "Email", targetRelationship: "email", targetAttribute: "emailAddress"){
-                    tableView.reloadData()
-                }
-            case 3:
-                if DataManager.addAttribute(value: "", toEntity: contact, targetEntityName: "Address", targetRelationship: "address", targetAttribute: "addressEntry"){
-                    tableView.reloadData()
-                }
-            case 5:
-                if DataManager.addAttribute(value: "", toEntity: contact, targetEntityName: "Phone", targetRelationship: "phone", targetAttribute: "phonenumber"){
-                    tableView.reloadData()
-                }
-            default:
-                break
-            }
-        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -202,7 +209,11 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
             cell.secondNameField.delegate = self
             return cell
         case 2:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "dob", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "dob", for: indexPath) as! DobEntryTableViewCell
+            if let date = contact?.dob{
+                cell.datePicker.date = date
+            }
+            cell.delegate = self
             return cell
         case 4:
             let cell = tableView.dequeueReusableCell(withIdentifier: "emails", for: indexPath) as! EntryTableViewCell
@@ -214,12 +225,15 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
                 cell.delegate = self
                 cell.contact = contact
                 cell.cellType = .email
+                if count == 1 {
+                    cell.isNotDeletable = false
+                }
                 emailObjectsSet[cell.entryField] = emailObject
             }
             return cell
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: "addresses", for: indexPath) as! EntryTableViewCell
-                cell.entryField.delegate  = self
+            cell.entryField.delegate  = self
             if let count = contact?.addresses?.count, count > 0, indexPath.row < count {
                 let addressObject = contact?.addresses?.object(at: indexPath.row) as! Address
                 cell.entryField.text = addressObject.addressEntry
@@ -227,12 +241,13 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
                 cell.delegate = self
                 cell.contact = contact
                 cell.cellType = .address
+
                 addresseObjectsSet[cell.entryField] = addressObject
             }
             return cell
         case 5:
             let cell = tableView.dequeueReusableCell(withIdentifier: "phones", for: indexPath) as! EntryTableViewCell
-                cell.entryField.delegate  = self
+            cell.entryField.delegate  = self
             if let count = contact?.phones?.count, count > 0 , indexPath.row < count{
                 let phoneObject = contact?.phones?.object(at: indexPath.row) as! Phone
                 cell.entryField.text = phoneObject.phonenumber
@@ -240,6 +255,10 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
                 cell.contact = contact
                 cell.cellType = .phone
                 cell.delegate = self
+               
+                if count == 1 {
+                    cell.isNotDeletable = false
+                }
                 phoneObjectsSet[cell.entryField] = phoneObject
             }
             return cell
@@ -264,4 +283,11 @@ extension EditEntryViewController:EntryTableViewCellDelegate{
     func didDeleteItem() {
         tableView.reloadData()
     }  
+}
+
+extension EditEntryViewController:DobEntryTableViewCellDelegate{
+    func didChangeDateTo(date: Date) {
+        contact?.dob = date
+        DataManager.saveRecords()
+    }
 }

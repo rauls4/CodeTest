@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C482F73421CAA99A0082F0C3 /* FirstNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C482F73321CAA99A0082F0C3 /* FirstNameTableViewCell.swift */; };
 		C482F73621CAA9A60082F0C3 /* SecondNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C482F73521CAA9A60082F0C3 /* SecondNameTableViewCell.swift */; };
+		C48DA93C21DADACD0020C077 /* DobEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48DA93B21DADACD0020C077 /* DobEntryTableViewCell.swift */; };
 		C4AA877721CBFE2D00538397 /* FullNameDisplayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AA877621CBFE2D00538397 /* FullNameDisplayTableViewCell.swift */; };
 		C4AA877921CC02CD00538397 /* DobDysplayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AA877821CC02CD00538397 /* DobDysplayTableViewCell.swift */; };
 		C4AA877B21CC0D8F00538397 /* Date+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AA877A21CC0D8F00538397 /* Date+Extras.swift */; };
@@ -48,6 +49,7 @@
 /* Begin PBXFileReference section */
 		C482F73321CAA99A0082F0C3 /* FirstNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstNameTableViewCell.swift; sourceTree = "<group>"; };
 		C482F73521CAA9A60082F0C3 /* SecondNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondNameTableViewCell.swift; sourceTree = "<group>"; };
+		C48DA93B21DADACD0020C077 /* DobEntryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DobEntryTableViewCell.swift; sourceTree = "<group>"; };
 		C4AA877621CBFE2D00538397 /* FullNameDisplayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullNameDisplayTableViewCell.swift; sourceTree = "<group>"; };
 		C4AA877821CC02CD00538397 /* DobDysplayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DobDysplayTableViewCell.swift; sourceTree = "<group>"; };
 		C4AA877A21CC0D8F00538397 /* Date+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extras.swift"; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				C482F73521CAA9A60082F0C3 /* SecondNameTableViewCell.swift */,
+				C48DA93B21DADACD0020C077 /* DobEntryTableViewCell.swift */,
 				C482F73321CAA99A0082F0C3 /* FirstNameTableViewCell.swift */,
 				C4CB228E21D4902300753A5D /* EntryTableViewCell.swift */,
 			);
@@ -347,6 +350,7 @@
 				C4CB22BD21D576B800753A5D /* IQKeyboardManagerConstants.swift in Sources */,
 				C4CB22BF21D576B800753A5D /* IQKeyboardReturnKeyHandler.swift in Sources */,
 				C4CB229A21D5446C00753A5D /* AddressDisplayTableViewCell.swift in Sources */,
+				C48DA93C21DADACD0020C077 /* DobEntryTableViewCell.swift in Sources */,
 				C4CB22C521D576B800753A5D /* IQNSArray+Sort.swift in Sources */,
 				C4CB22B821D576B800753A5D /* IQBarButtonItem.swift in Sources */,
 				C4CCB7F021C9A142009AAB0B /* ViewController.swift in Sources */,

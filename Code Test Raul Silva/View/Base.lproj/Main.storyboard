@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wdg-fx-U1p">
-                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
+                                <rect key="frame" x="0.0" y="172" width="375" height="495"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="recordCell" id="XxC-dx-d3E" customClass="ContactTableViewCell" customModule="Code_Test_Raul_Silva" customModuleProvider="target">
@@ -125,11 +125,18 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <searchBar contentMode="redraw" text="" translatesAutoresizingMaskIntoConstraints="NO" id="2tD-dL-60I">
+                                <rect key="frame" x="0.0" y="116" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="wdg-fx-U1p" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="3DA-vs-o2F"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="wdg-fx-U1p" secondAttribute="trailing" id="9Ij-jg-tcy"/>
+                            <constraint firstItem="wdg-fx-U1p" firstAttribute="top" secondItem="2tD-dL-60I" secondAttribute="bottom" id="Imb-zj-7iV"/>
+                            <constraint firstItem="2tD-dL-60I" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="SAR-p5-k5L"/>
+                            <constraint firstItem="2tD-dL-60I" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Snm-oO-KfV"/>
+                            <constraint firstItem="2tD-dL-60I" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="WOI-dG-ao9"/>
                             <constraint firstItem="wdg-fx-U1p" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bZW-2l-7mm"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wdg-fx-U1p" secondAttribute="bottom" id="wu2-Cz-7RO"/>
                         </constraints>
@@ -143,13 +150,14 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="searchBar" destination="2tD-dL-60I" id="2HZ-p0-icm"/>
                         <outlet property="tableView" destination="wdg-fx-U1p" id="Jao-4h-gyr"/>
                         <segue destination="L4T-8I-z8v" kind="show" identifier="toRecord" id="oia-dy-80V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1519" y="-331"/>
+            <point key="canvasLocation" x="-1519.2" y="-331.48425787106447"/>
         </scene>
         <!--Record Detail-->
         <scene sceneID="Kui-LO-s3l">
@@ -361,7 +369,7 @@
                                             <outlet property="secondNameField" destination="S7t-oE-fw8" id="qe6-XL-ZYN"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="dob" rowHeight="76" id="BtG-1z-DjA">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="dob" rowHeight="76" id="BtG-1z-DjA" customClass="DobEntryTableViewCell" customModule="Code_Test_Raul_Silva" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="264" width="355" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BtG-1z-DjA" id="Nv0-fc-T82">
@@ -374,7 +382,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="QcE-qB-ya6">
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="QcE-qB-ya6">
                                                     <rect key="frame" x="0.0" y="25" width="355" height="90"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="90" id="iUE-bM-kbA"/>
@@ -382,6 +390,9 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="566862741.99212503">
                                                         <!--2018-12-18 21:52:21 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="datePicked:" destination="BtG-1z-DjA" eventType="valueChanged" id="BCF-9T-1cm"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -394,6 +405,9 @@
                                                 <constraint firstItem="QcE-qB-ya6" firstAttribute="top" secondItem="xU8-1J-Wrb" secondAttribute="bottom" id="zIM-qh-h80"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="datePicker" destination="QcE-qB-ya6" id="5rZ-qV-DoM"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="addresses" rowHeight="85" id="gQf-6u-S1i" customClass="EntryTableViewCell" customModule="Code_Test_Raul_Silva" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="340" width="355" height="85"/>
@@ -430,6 +444,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="deleteButton" destination="UVE-m5-3bh" id="r7y-x8-4Y7"/>
                                             <outlet property="entryField" destination="vRq-Oh-1Z5" id="wXw-3W-BgC"/>
                                         </connections>
                                     </tableViewCell>
@@ -468,6 +483,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="deleteButton" destination="Wb3-Yj-PCE" id="brl-B7-R2o"/>
                                             <outlet property="entryField" destination="2sY-wv-EsT" id="CNR-Fl-eSC"/>
                                         </connections>
                                     </tableViewCell>
@@ -506,6 +522,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="deleteButton" destination="goc-km-Mom" id="TGl-aT-4Jn"/>
                                             <outlet property="entryField" destination="BKL-Uc-EvK" id="O6W-HK-pwh"/>
                                         </connections>
                                     </tableViewCell>

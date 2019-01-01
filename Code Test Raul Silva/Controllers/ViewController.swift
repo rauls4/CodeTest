@@ -11,21 +11,22 @@ import CoreData
 
 class ViewController: UIViewController {
     
+    
+    
     var contacts:[Contact]?
     
-    
-    
     @IBOutlet weak var tableView: UITableView!
+
     
+    @IBOutlet weak var searchBar: UISearchBar!
     
-    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
-        
-    }
-    
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {}
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        searchBar.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -33,10 +34,30 @@ class ViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         contacts = DataManager.fetchRecords()
         tableView.reloadData()
+        searchBar.text = ""
+    }
+}
+
+extension ViewController: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+  
+    }
+     func searchBar(_ searchBar: UISearchBar,
+                            textDidChange searchText: String){
+        if searchText == ""{
+            contacts =   DataManager.fetchRecords()
+            tableView.reloadData()
+        }else{
+            contacts =   DataManager.refetch(with: searchText)
+            tableView.reloadData()
+        }
+        
+       
     }
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contacts?.count ?? 0

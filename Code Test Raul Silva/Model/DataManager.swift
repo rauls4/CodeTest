@@ -48,6 +48,25 @@ class DataManager{
         
     }
     
+    static func refetch(with text: String) -> [Contact]?{
+        let fetchRequest =
+            NSFetchRequest<NSManagedObject>(entityName: "Contact")
+        let sort = NSSortDescriptor(key: #keyPath(Contact.secondName), ascending: true)
+        
+         fetchRequest.sortDescriptors = [sort]
+        print(text)
+        let predicate = NSPredicate(format: "firstName CONTAINS %@ OR secondName CONTAINS %@", text, text)
+       fetchRequest.predicate = predicate
+        do {
+            let  people = try managedContext?.fetch(fetchRequest)
+            let contacts = people as? [Contact]
+            return contacts
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+            return nil
+        }
+    }
+    
     static func addAttribute(value:String, toEntity:Contact, targetEntityName:String, targetRelationship:String, targetAttribute:String) -> Bool {
         guard let context = managedContext, let emailEntity = NSEntityDescription.entity(forEntityName: targetEntityName, in: context) else {
             return false

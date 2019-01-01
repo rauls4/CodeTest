@@ -16,8 +16,6 @@ extension Date {
         
         dateformatter.dateStyle = DateFormatter.Style.medium
         
-        //dateformatter.timeStyle = DateFormatter.Style.full
-        
         let now = dateformatter.string(from: NSDate() as Date)
         
         return now

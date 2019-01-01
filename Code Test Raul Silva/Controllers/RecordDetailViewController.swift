@@ -147,7 +147,22 @@ extension RecordDetailViewController: UITableViewDelegate, UITableViewDataSource
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "dob", for: indexPath) as! DobDysplayTableViewCell
-                        cell.dobField.text = contact?.dob?.readable()
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.doesRelativeDateFormatting = true
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "MMM dd, yyyy"
+            
+            if let date = contact?.dob {
+                let time = timeFormatter.string(from: date)
+                 cell.dobField.text = time
+            }
+          
+            
+            
+            
                     return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "addresses", for: indexPath) as! AddressDisplayTableViewCell

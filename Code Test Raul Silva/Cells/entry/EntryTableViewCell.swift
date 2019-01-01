@@ -17,14 +17,19 @@ class EntryTableViewCell: UITableViewCell {
 
     weak var delegate:EntryTableViewCellDelegate?
     @IBOutlet weak var entryField: UITextField!
+    @IBOutlet weak var deleteButton: UIButton!
     
     var entity:NSManagedObject?
     var contact:Contact?
+    var isNotDeletable = true
     var cellType:CellTypes?
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        if isNotDeletable { deleteButton.isHidden = true}
+        deleteButton.isHidden = true
     }
+
 
     @IBAction func deleteEntry(_ sender: UIButton) {
         if let entity = entity, let cellType = cellType{
