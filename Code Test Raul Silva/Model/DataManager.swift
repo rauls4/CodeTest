@@ -28,6 +28,14 @@ class DataManager{
         }
     }
     
+    static func addEmptyRecord (type:CellTypes, contact:Contact) {
+        if type == .email{
+           _ = addAttribute(value: "", toEntity: contact, targetEntityName: "Email", targetRelationship: "email", targetAttribute: "emailAddress")
+        }
+        if type == .phone{
+            _ = addAttribute(value: "", toEntity: contact, targetEntityName: "Phone", targetRelationship: "phone", targetAttribute: "phonenumber")
+        }
+    }
     static func fetchRecords() -> [Contact]?{
         
         let fetchRequest =

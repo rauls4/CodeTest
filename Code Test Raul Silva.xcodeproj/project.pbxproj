@@ -103,11 +103,8 @@
 		C4CB229221D542C500753A5D /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				C4CCB2FB21C9B9F600957B13 /* ContactTableViewCell.swift */,
-				C4AA877621CBFE2D00538397 /* FullNameDisplayTableViewCell.swift */,
 				C4CB229421D5441C00753A5D /* display */,
 				C4CB229321D542EE00753A5D /* entry */,
-				C4AA877821CC02CD00538397 /* DobDysplayTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -126,6 +123,9 @@
 		C4CB229421D5441C00753A5D /* display */ = {
 			isa = PBXGroup;
 			children = (
+				C4AA877821CC02CD00538397 /* DobDysplayTableViewCell.swift */,
+				C4CCB2FB21C9B9F600957B13 /* ContactTableViewCell.swift */,
+				C4AA877621CBFE2D00538397 /* FullNameDisplayTableViewCell.swift */,
 				C4CB229521D5445200753A5D /* EmailDisplayTableViewCell.swift */,
 				C4CB229721D5446000753A5D /* PhoneDisplayTableViewCell.swift */,
 				C4CB229921D5446C00753A5D /* AddressDisplayTableViewCell.swift */,

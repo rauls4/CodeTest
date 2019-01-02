@@ -9,15 +9,12 @@
 import Foundation
 
 extension Date {
-
-    func readable() -> String {
-        
-        let dateformatter = DateFormatter()
-        
-        dateformatter.dateStyle = DateFormatter.Style.medium
-        
-        let now = dateformatter.string(from: NSDate() as Date)
-        
-        return now
+    struct Formatter {
+        static let dateFormatter = DateFormatter()
+    }
+    
+    var shortDate: String {
+         Formatter.dateFormatter.dateFormat = "MMM dd, yyyy"
+       return Formatter.dateFormatter.string(from: self)
     }
 }

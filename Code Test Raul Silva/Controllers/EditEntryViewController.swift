@@ -12,26 +12,27 @@ import CoreData
 class EditEntryViewController: UIViewController {
     var contact:Contact?
     var isNew = false
-    var addresseObjectsSet:[UITextField:Address] = [:]
-    var emailObjectsSet:[UITextField:Email] = [:]
-    var phoneObjectsSet:[UITextField:Phone] = [:]
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
-        tableView.delegate = self
-        
+        self.prepTable()
         if isNew {
             self.title = "New contact"
             if let contact = contact{
-               let _ = DataManager.addAttribute(value: "", toEntity: contact, targetEntityName: "Email", targetRelationship: "email", targetAttribute: "emailAddress")
-               let _ = DataManager.addAttribute(value: "", toEntity: contact, targetEntityName: "Phone", targetRelationship: "phone", targetAttribute: "phonenumber")
+                DataManager.addEmptyRecord(type: .email, contact: contact)
+                DataManager.addEmptyRecord(type: .phone, contact: contact)
             }
         }
-        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trashRecord(_:)))
+    }
+    
+    private func prepTable(){
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.layer.cornerRadius = 5
+        tableView.clipsToBounds = true
     }
     
     @objc private func trashRecord(_ sender:UIBarButtonItem){
@@ -46,42 +47,6 @@ class EditEntryViewController: UIViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         DataManager.saveRecords()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.mapCells()
-        tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableView.automaticDimension
-    }
-    
-    private func mapCells(){
-        var cellMap:[CellTypes]?
-        cellMap = [.firstName,.secondName,.dob]
-        if let contact = contact {
-            if let emails = contact.emails {
-                for _ in emails{
-                    cellMap?.append(.email)
-                }
-            }else{
-                cellMap?.append(.email)
-            }
-
-            if let addresses = contact.addresses {
-                for _ in addresses{
-                    cellMap?.append(.address)
-                }
-            }else{
-                cellMap?.append(.address)
-            }
-            
-            if let phones = contact.phones {
-                for _ in phones{
-                    cellMap?.append(.phone)
-                }
-            }else{
-                cellMap?.append(.phone)
-            }
-        }
     }
     
     @objc private func addField(sender: UIButton?) {
@@ -104,32 +69,6 @@ class EditEntryViewController: UIViewController {
             }
         }
     }
-    
-    private func editRecord(textField: UITextField){
-        if let firstNameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? FirstNameTableViewCell,
-            textField == firstNameCell.firstNameField
-        {
-            contact?.firstName = textField.text
-        }
-        
-        if let seconfNameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SecondNameTableViewCell,
-            textField == seconfNameCell.secondNameField
-        {
-            contact?.secondName = textField.text
-        }
-        
-        if phoneObjectsSet.keys.contains(textField) == true, let phoneObject =   phoneObjectsSet[textField]{
-            phoneObject.phonenumber = textField.text
-        }
-        
-        if emailObjectsSet.keys.contains(textField) == true, let emailObject = emailObjectsSet[textField]{
-            emailObject.emailAddress = textField.text
-        }
-        if addresseObjectsSet.keys.contains(textField) == true, let addressObect = addresseObjectsSet[textField]{
-            addressObect.addressEntry = textField.text
-        }
-        DataManager.saveRecords()
-    }
 }
 
 extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
@@ -143,7 +82,6 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
         if section == 4 {title = "Emails"}
         if section == 3 {title = "Adresses"}
         if section == 5 {title = "Phones"}
-        if title != nil{
             let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 30))
             headerView.backgroundColor = UIColor(displayP3Red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
             let label = UILabel()
@@ -156,13 +94,7 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
             button.addTarget(self,action:#selector(addField),for:.touchUpInside)
             button.setTitleColor(self.view.tintColor, for: .normal)
             headerView.addSubview(button)
-            headerView.layer.cornerRadius = 5
-            headerView.clipsToBounds = true
             return headerView
-        }
-        
-        let headerView = UIView()
-        return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -199,14 +131,22 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "firstName", for: indexPath) as! FirstNameTableViewCell
-            cell.firstNameField.text = contact?.firstName?.capitalized ?? ""
-            cell.firstNameField.delegate = self
+            let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EntryTableViewCell
+            cell.entryField.text = contact?.firstName?.capitalized ?? ""
+            cell.delegate = self
+            cell.contact = contact
+            cell.cellType = .firstName
+            cell.cellTitle.text = "First Name:"
+            cell.deleteButtonWidthContraint.constant = 0
             return cell
         case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "secondName", for: indexPath) as! SecondNameTableViewCell
-            cell.secondNameField.text = contact?.secondName?.capitalized ?? ""
-            cell.secondNameField.delegate = self
+            let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EntryTableViewCell
+            cell.entryField.text = contact?.secondName?.capitalized ?? ""
+            cell.delegate = self
+            cell.contact = contact
+            cell.cellType = .secondName
+            cell.cellTitle.text = "Last Name:"
+            cell.deleteButtonWidthContraint.constant = 0
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "dob", for: indexPath) as! DobEntryTableViewCell
@@ -215,67 +155,57 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
             }
             cell.delegate = self
             return cell
-        case 4:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "emails", for: indexPath) as! EntryTableViewCell
-            cell.entryField.delegate  = self
-            if let count = contact?.emails?.count, count > 0, indexPath.row < count {
-                let emailObject = contact?.emails?.object(at: indexPath.row) as? Email
-                cell.entryField.text = emailObject?.emailAddress
-                cell.entity = emailObject
-                cell.delegate = self
-                cell.contact = contact
-                cell.cellType = .email
-                if count == 1 {
-                    cell.deleteButton.isHidden = true
-                }
-                emailObjectsSet[cell.entryField] = emailObject
-            }
-            return cell
         case 3:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "addresses", for: indexPath) as! EntryTableViewCell
-            cell.entryField.delegate  = self
+            let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EntryTableViewCell
             if let count = contact?.addresses?.count, count > 0, indexPath.row < count {
                 let addressObject = contact?.addresses?.object(at: indexPath.row) as! Address
                 cell.entryField.text = addressObject.addressEntry
+                cell.cellTitle.isHidden = true
                 cell.entity = addressObject
                 cell.delegate = self
                 cell.contact = contact
                 cell.cellType = .address
-
-                addresseObjectsSet[cell.entryField] = addressObject
+                cell.deleteButtonWidthContraint.constant = 30
+            }
+            return cell
+        case 4:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EntryTableViewCell
+            if let count = contact?.emails?.count, count > 0, indexPath.row < count {
+                let emailObject = contact?.emails?.object(at: indexPath.row) as? Email
+                cell.entryField.text = emailObject?.emailAddress
+                 cell.cellTitle.isHidden = true
+                cell.entity = emailObject
+                cell.delegate = self
+                cell.contact = contact
+                cell.cellType = .email
+                if count < 2 {
+                    cell.deleteButtonWidthContraint.constant = 0
+                }else{
+                    cell.deleteButtonWidthContraint.constant = 30
+                }
             }
             return cell
         case 5:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "phones", for: indexPath) as! EntryTableViewCell
-            cell.entryField.delegate  = self
+            let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EntryTableViewCell
             if let count = contact?.phones?.count, count > 0 , indexPath.row < count{
                 let phoneObject = contact?.phones?.object(at: indexPath.row) as! Phone
                 cell.entryField.text = phoneObject.phonenumber
+                 cell.cellTitle.isHidden = true
                 cell.entity = phoneObject
                 cell.contact = contact
                 cell.cellType = .phone
                 cell.delegate = self
-               
-                if count == 1 {
-                    cell.deleteButton.isHidden = true
+                if count < 2 {
+                    cell.deleteButtonWidthContraint.constant = 0
+                }else{
+                    cell.deleteButtonWidthContraint.constant = 30
                 }
-                phoneObjectsSet[cell.entryField] = phoneObject
             }
             return cell
         default:
             let cell = UITableViewCell()
             return cell
         }
-    }
-}
-
-extension EditEntryViewController:UITextFieldDelegate{
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        self.editRecord(textField: textField)
     }
 }
 

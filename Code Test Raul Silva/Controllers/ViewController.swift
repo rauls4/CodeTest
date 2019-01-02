@@ -9,19 +9,25 @@
 import UIKit
 import CoreData
 
+enum CellTypes{
+    case fullName
+    case firstName
+    case secondName
+    case dob
+    case phone
+    case email
+    case address
+}
+
 class ViewController: UIViewController {
-    
-    
     
     var contacts:[Contact]?
     
     @IBOutlet weak var tableView: UITableView!
-
-    
     @IBOutlet weak var searchBar: UISearchBar!
     
     @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {}
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -39,11 +45,8 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: UISearchBarDelegate {
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-  
-    }
-     func searchBar(_ searchBar: UISearchBar,
-                            textDidChange searchText: String){
+    func searchBar(_ searchBar: UISearchBar,
+                   textDidChange searchText: String){
         if searchText == ""{
             contacts =   DataManager.fetchRecords()
             tableView.reloadData()
@@ -51,31 +54,27 @@ extension ViewController: UISearchBarDelegate {
             contacts =   DataManager.refetch(with: searchText)
             tableView.reloadData()
         }
-        
-       
     }
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
-
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contacts?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "recordCell", for: indexPath) as! ContactTableViewCell
-    
+        
         if let phones = contacts?[indexPath.row].phones{
-                cell.phonesCount.text = String(phones.count)
+            cell.phonesCount.text = String(phones.count)
         }
         
         if let addresses = contacts?[indexPath.row].addresses{
-                cell.adressCount.text = String(addresses.count)
+            cell.adressCount.text = String(addresses.count)
         }
         
         if let emails = contacts?[indexPath.row].emails{
-                cell.emailsCount.text = String(emails.count)
+            cell.emailsCount.text = String(emails.count)
         }
         
         if let firstName = contacts?[indexPath.row].firstName, let secondName = contacts?[indexPath.row].secondName {

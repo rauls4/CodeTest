@@ -8,64 +8,28 @@
 
 import UIKit
 
-enum CellTypes{
-    case fullName
-    case firstName
-    case secondName
-    case dob
-    case phone
-    case email
-    case address
-}
-
 class RecordDetailViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-
+    
     var contact:Contact? //Our contact of interes
     var cellMap = [CellTypes]()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Contact"
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.layer.cornerRadius = 5
+        tableView.clipsToBounds = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.mapCells()
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableView.automaticDimension
         tableView.reloadData()
-    }
-    
-    private func mapCells(){
-        cellMap = [.fullName,.dob] //Minimum amount of fields on record
-
-        if let contact = contact {
-            if let addresses = contact.addresses {
-                for _ in addresses{
-                    cellMap.append(.address)
-                }
-            }
-            if let emails = contact.emails {
-                for _ in emails{
-                    cellMap.append(.email)
-                }
-            }else{
-                cellMap.append(.email)
-            }
-            if let phones = contact.phones {
-                for _ in phones{
-                    cellMap.append(.phone)
-                }
-            }else{
-                cellMap.append(.phone)
-            }
-        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -82,24 +46,22 @@ extension RecordDetailViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "📇 Name"
-        }
+        
         if section == 1 {
             return "📅 Birthday"
         }
         if section == 2, let count = contact?.addresses?.count, count > 0 {
             if count > 1 {
-            return "🏠 Addresses"
+                return "🏠 Addresses"
             }else{
-              return "🏠 Address"
+                return "🏠 Address"
             }
         }
         if section == 3, let count = contact?.emails?.count, count > 0 {
             if  count > 1{
                 return "✉ Emails"
             }else{
-                 return "✉ Email"
+                return "✉ Email"
             }
         }
         
@@ -123,7 +85,7 @@ extension RecordDetailViewController: UITableViewDelegate, UITableViewDataSource
         if section == 3 {
             return(contact?.emails?.count ?? 0)
         }
-
+        
         if section == 4 {
             return(contact?.phones?.count ?? 0)
         }
@@ -147,23 +109,11 @@ extension RecordDetailViewController: UITableViewDelegate, UITableViewDataSource
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "dob", for: indexPath) as! DobDysplayTableViewCell
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .medium
-            dateFormatter.doesRelativeDateFormatting = true
-            
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "MMM dd, yyyy"
-            
             if let date = contact?.dob {
-                let time = timeFormatter.string(from: date)
-                 cell.dobField.text = time
+                let time =   date.shortDate
+                cell.dobField.text = time
             }
-          
-            
-            
-            
-                    return cell
+            return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "addresses", for: indexPath) as! AddressDisplayTableViewCell
             let addressObject = contact?.addresses?.object(at: indexPath.row) as! Address
@@ -179,11 +129,6 @@ extension RecordDetailViewController: UITableViewDelegate, UITableViewDataSource
             let phoneObject = contact?.phones?.object(at: indexPath.row) as! Phone
             cell.textLabel?.text = phoneObject.phonenumber
             return cell
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "phones", for: indexPath) as! PhoneDisplayTableViewCell
-//            let phoneObject = contact?.phones?.object(at: indexPath.row) as! Phone
-//             cell.textLabel?.text = phoneObject.phonenumber
-//            return cell
-            
         default:
             let cell = UITableViewCell()
             return cell
