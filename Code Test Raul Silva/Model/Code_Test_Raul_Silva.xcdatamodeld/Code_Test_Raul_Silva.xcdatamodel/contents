@@ -26,9 +26,9 @@
         <relationship name="phone" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="phones" inverseEntity="Contact" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Address" positionX="-13531.27734375" positionY="-18799.5625" width="128" height="73"/>
+        <element name="Address" positionX="-13531.27734375" positionY="-18799.5625" width="128" height="75"/>
         <element name="AddressBook" positionX="-13642.55859375" positionY="-19099.7578125" width="128" height="58"/>
-        <element name="Contact" positionX="-13185.2421875" positionY="-19028.90234375" width="128" height="163"/>
+        <element name="Contact" positionX="-13185.2421875" positionY="-19028.90234375" width="128" height="165"/>
         <element name="Email" positionX="-13531.31640625" positionY="-18927.2578125" width="128" height="73"/>
         <element name="Phone" positionX="-13530.01953125" positionY="-18661.49609375" width="128" height="73"/>
     </elements>
