@@ -10,6 +10,10 @@ import UIKit
 import CoreData
 
 class EditEntryViewController: UIViewController {
+    
+    static let editSegueIdentifier = "toEdit"
+    static let newSegueIdentifier = "toNew"
+    
     var contact:Contact?
     var isNew = false
     
@@ -131,7 +135,7 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EntryTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: EntryTableViewCell.identifier, for: indexPath) as! EntryTableViewCell
             cell.entryField.text = contact?.firstName?.capitalized ?? ""
             cell.delegate = self
             cell.contact = contact
@@ -140,7 +144,7 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
             cell.deleteButtonWidthContraint.constant = 0
             return cell
         case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EntryTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: EntryTableViewCell.identifier, for: indexPath) as! EntryTableViewCell
             cell.entryField.text = contact?.secondName?.capitalized ?? ""
             cell.delegate = self
             cell.contact = contact
@@ -149,14 +153,14 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
             cell.deleteButtonWidthContraint.constant = 0
             return cell
         case 2:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "dob", for: indexPath) as! DobEntryTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: DobEntryTableViewCell.identifier, for: indexPath) as! DobEntryTableViewCell
             if let date = contact?.dob{
                 cell.datePicker.date = date
             }
             cell.delegate = self
             return cell
         case 3:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EntryTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: EntryTableViewCell.identifier, for: indexPath) as! EntryTableViewCell
             if let count = contact?.addresses?.count, count > 0, indexPath.row < count {
                 let addressObject = contact?.addresses?.object(at: indexPath.row) as! Address
                 cell.entryField.text = addressObject.addressEntry
@@ -169,7 +173,7 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
             }
             return cell
         case 4:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EntryTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: EntryTableViewCell.identifier, for: indexPath) as! EntryTableViewCell
             if let count = contact?.emails?.count, count > 0, indexPath.row < count {
                 let emailObject = contact?.emails?.object(at: indexPath.row) as? Email
                 cell.entryField.text = emailObject?.emailAddress
@@ -186,7 +190,7 @@ extension EditEntryViewController: UITableViewDelegate, UITableViewDataSource
             }
             return cell
         case 5:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EntryTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: EntryTableViewCell.identifier, for: indexPath) as! EntryTableViewCell
             if let count = contact?.phones?.count, count > 0 , indexPath.row < count{
                 let phoneObject = contact?.phones?.object(at: indexPath.row) as! Phone
                 cell.entryField.text = phoneObject.phonenumber

@@ -9,6 +9,9 @@
 import UIKit
 
 class EmailDisplayTableViewCell: UITableViewCell {
+    
+    
+    static let identifier = "emails"
 
     override func awakeFromNib() {
         super.awakeFromNib()

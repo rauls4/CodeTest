@@ -10,6 +10,8 @@ import UIKit
 
 class ContactTableViewCell: UITableViewCell {
     
+    static let identifier = "recordCell"
+    
     var contact:Contact?
     
     @IBOutlet weak var mainLabel: UILabel!

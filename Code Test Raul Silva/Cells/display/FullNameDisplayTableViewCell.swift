@@ -9,6 +9,8 @@
 import UIKit
 
 class FullNameDisplayTableViewCell: UITableViewCell {
+    
+    static let identifier = "fullName"
 
     var contact:Contact?
     

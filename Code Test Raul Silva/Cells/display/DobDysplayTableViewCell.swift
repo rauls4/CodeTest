@@ -10,6 +10,8 @@ import UIKit
 
 class DobDysplayTableViewCell: UITableViewCell {
 
+    static let identifer = "dob"
+
     @IBOutlet weak var dobField: UILabel!
     
     override func awakeFromNib() {

@@ -63,7 +63,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "recordCell", for: indexPath) as! ContactTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.identifier, for: indexPath) as! ContactTableViewCell
         
         if let phones = contacts?[indexPath.row].phones{
             cell.phonesCount.text = String(phones.count)
@@ -90,7 +90,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toRecord"{
+        if segue.identifier == RecordDetailViewController.segueIdentifier{
             let cellIndex =  self.tableView.indexPath(for: sender as! UITableViewCell)
             let recordViewTarget = segue.destination as! RecordDetailViewController
             if let row = cellIndex?.row {
@@ -98,7 +98,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             }
             
         }
-        if segue.identifier == "toNew"{
+        if segue.identifier == EditEntryViewController.newSegueIdentifier{
             let newrecordTarget = segue.destination as! EditEntryViewController
             newrecordTarget.contact = DataManager.newRecord(firstName: "", secondName: "", dob: Date(), phones: [String](), addresses: [String](), emails: [String]())
             newrecordTarget.isNew = true
@@ -106,6 +106,6 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "toRecord", sender: tableView.cellForRow(at: indexPath))
+        performSegue(withIdentifier: RecordDetailViewController.segueIdentifier, sender: tableView.cellForRow(at: indexPath))
     }
 }

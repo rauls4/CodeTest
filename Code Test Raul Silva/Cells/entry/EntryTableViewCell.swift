@@ -15,6 +15,8 @@ protocol EntryTableViewCellDelegate:class {
 
 class EntryTableViewCell: UITableViewCell {
     
+    static let identifier = "entryCell"
+    
     weak var delegate:EntryTableViewCellDelegate?
     
     @IBOutlet weak var entryField: UITextField!

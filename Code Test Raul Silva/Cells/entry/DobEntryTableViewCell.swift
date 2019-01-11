@@ -13,6 +13,9 @@ protocol DobEntryTableViewCellDelegate:class {
 }
 
 class DobEntryTableViewCell: UITableViewCell {
+    
+    static let identifier = "dob"
+    
     weak var delegate:DobEntryTableViewCellDelegate?
     
     @IBOutlet weak var datePicker: UIDatePicker!

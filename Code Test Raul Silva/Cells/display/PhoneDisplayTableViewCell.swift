@@ -10,6 +10,7 @@ import UIKit
 
 class PhoneDisplayTableViewCell: UITableViewCell {
 
+    static let identifier = "phones"
     
     override func awakeFromNib() {
         super.awakeFromNib()

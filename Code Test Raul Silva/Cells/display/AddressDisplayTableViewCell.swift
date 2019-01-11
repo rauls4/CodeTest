@@ -9,6 +9,9 @@
 import UIKit
 
 class AddressDisplayTableViewCell: UITableViewCell {
+    
+    
+    static let identifier = "addresses"
 
     override func awakeFromNib() {
         super.awakeFromNib()

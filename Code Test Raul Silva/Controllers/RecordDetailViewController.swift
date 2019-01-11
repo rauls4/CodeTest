@@ -10,6 +10,8 @@ import UIKit
 
 class RecordDetailViewController: UIViewController {
     
+    static let segueIdentifier = "toRecord"
+    
     @IBOutlet weak var tableView: UITableView!
     
     var contact:Contact? //Our contact of interes
@@ -33,7 +35,7 @@ class RecordDetailViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toEdit"{
+        if segue.identifier == EditEntryViewController.editSegueIdentifier{
             let recordViewTarget = segue.destination as! EditEntryViewController
             recordViewTarget.contact = contact
         }
@@ -96,7 +98,7 @@ extension RecordDetailViewController: UITableViewDelegate, UITableViewDataSource
         
         switch indexPath.section {
         case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "fullName", for: indexPath) as! FullNameDisplayTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: FullNameDisplayTableViewCell.identifier, for: indexPath) as! FullNameDisplayTableViewCell
             cell.fullNameField.text = "\(contact?.firstName?.capitalized ?? "") \(contact?.secondName?.capitalized ?? "")"
             cell.contact = contact
             
@@ -108,24 +110,25 @@ extension RecordDetailViewController: UITableViewDelegate, UITableViewDataSource
             
             return cell
         case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "dob", for: indexPath) as! DobDysplayTableViewCell
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: DobDysplayTableViewCell.identifer, for: indexPath) as! DobDysplayTableViewCell
             if let date = contact?.dob {
                 let time =   date.shortDate
                 cell.dobField.text = time
             }
             return cell
         case 2:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "addresses", for: indexPath) as! AddressDisplayTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: AddressDisplayTableViewCell.identifier, for: indexPath) as! AddressDisplayTableViewCell
             let addressObject = contact?.addresses?.object(at: indexPath.row) as! Address
             cell.textLabel?.text = addressObject.addressEntry
             return cell
         case 3:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "emails", for: indexPath) as! EmailDisplayTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: EmailDisplayTableViewCell.identifier, for: indexPath) as! EmailDisplayTableViewCell
             let emailObject = contact?.emails?.object(at: indexPath.row) as! Email
             cell.textLabel?.text = emailObject.emailAddress
             return cell
         case 4:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "phones", for: indexPath) as! PhoneDisplayTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: PhoneDisplayTableViewCell.identifier, for: indexPath) as! PhoneDisplayTableViewCell
             let phoneObject = contact?.phones?.object(at: indexPath.row) as! Phone
             cell.textLabel?.text = phoneObject.phonenumber
             return cell
